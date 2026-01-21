@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  # Laravel Backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: subly-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/var/www/html
+    environment:
+      - DB_CONNECTION=mysql
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=subly
+      - DB_USERNAME=subly_user
+      - DB_PASSWORD=subly_password
+    depends_on:
+      - db
+    networks:
+      - subly-network
+    command: php artisan serve --host=0.0.0.0 --port=8000
+
+  # Next.js Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: subly-frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000/api
+    depends_on:
+      - backend
+    networks:
+      - subly-network
+    command: npm run dev
+
+  # MySQL Database
+  db:
+    image: mysql:8.0
+    container_name: subly-db
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_DATABASE=subly
+      - MYSQL_USER=subly_user
+      - MYSQL_PASSWORD=subly_password
+      - MYSQL_ROOT_PASSWORD=root_password
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - subly-network
+
+networks:
+  subly-network:
+    driver: bridge
+
+volumes:
+  db-data:

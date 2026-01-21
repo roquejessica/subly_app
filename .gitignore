@@ -1,0 +1,23 @@
+# --- Laravel Specific ---
+/vendor/
+/public/storage
+/public/hot
+/storage/*.key
+.phpunit.result.cache
+.env
+.env.backup
+.env.production
+
+# --- Node/Next.js Specific ---
+/node_modules/
+/.next/
+/out/
+/build/
+.next-env.d.ts
+.pnp.js
+
+# --- General / IDE ---
+.DS_Store
+.vscode/
+npm-debug.log*
+yarn-error.log*
