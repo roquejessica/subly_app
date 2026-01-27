@@ -23,8 +23,18 @@ export default function MessageList({ messages, onAction }: MessageListProps) {
         <div className="empty-state">
           <p>Start by telling me about a new subscription!</p>
           <div className="suggestions">
-            <button className="badge badge-primary">"Netflix for 599 pesos monthly"</button>
-            <button className="badge badge-primary">"I just subbed to Spotify for $9.99"</button>
+            <button
+              className="badge badge-primary"
+              onClick={() => onAction?.("Netflix for 599 pesos monthly")}
+            >
+              "Netflix for 599 pesos monthly"
+            </button>
+            <button
+              className="badge badge-primary"
+              onClick={() => onAction?.("I just subbed to Spotify for 149 per month")}
+            >
+              "I just subbed to Spotify for 149 per month"
+            </button>
           </div>
         </div>
       ) : (

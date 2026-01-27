@@ -6,7 +6,11 @@ import ChatInput from "./ChatInput";
 import { Message } from "./ChatMessage";
 import { v4 as uuidv4 } from "uuid";
 
-export default function ChatInterface() {
+interface ChatInterfaceProps {
+    onSubscriptionAdded?: () => void;
+}
+
+export default function ChatInterface({ onSubscriptionAdded }: ChatInterfaceProps) {
     const [messages, setMessages] = useState<Message[]>([
         {
             id: "initial",
@@ -59,8 +63,9 @@ export default function ChatInterface() {
 
             setMessages((prev) => [...prev, assistantMessage]);
 
-            // If missing info, we could handle showing buttons here or within ChatMessage
-            // For now, let's just make the message content a bit more dynamic if needed
+            if (data.status === 'success' && onSubscriptionAdded) {
+                onSubscriptionAdded();
+            }
         } catch (error) {
             console.error("Chat error:", error);
             const errorMessage: Message = {
